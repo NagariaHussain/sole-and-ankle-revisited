@@ -1,18 +1,15 @@
-import React from 'react';
-import styled from 'styled-components/macro';
+import React from "react";
+import styled from "styled-components/macro";
 
-import { COLORS, WEIGHTS } from '../../constants';
-import Logo from '../Logo';
-import SuperHeader from '../SuperHeader';
-import MobileMenu from '../MobileMenu';
+import { COLORS, WEIGHTS } from "../../constants";
+import Logo from "../Logo";
+import SuperHeader from "../SuperHeader";
+import MobileMenu from "../MobileMenu";
+import UnstyledButton from "../UnstyledButton";
+import Icon from "../Icon";
 
 const Header = () => {
   const [showMobileMenu, setShowMobileMenu] = React.useState(false);
-
-  // For our mobile hamburger menu, we'll want to use a button
-  // with an onClick handler, something like this:
-  //
-  // <button onClick={() => setShowMobileMenu(true)}>
 
   return (
     <header>
@@ -29,7 +26,20 @@ const Header = () => {
           <NavLink href="/kids">Kids</NavLink>
           <NavLink href="/collections">Collections</NavLink>
         </Nav>
+
         <Side />
+
+        <MobileNavButtons>
+          <UnstyledButton>
+            <Icon id="shopping-bag" />
+          </UnstyledButton>
+          <UnstyledButton>
+            <Icon id="search" />
+          </UnstyledButton>
+          <UnstyledButton onClick={() => setShowMobileMenu(!showMobileMenu)}>
+            <Icon id="menu" />
+          </UnstyledButton>
+        </MobileNavButtons>
       </MainHeader>
 
       <MobileMenu
@@ -41,17 +51,38 @@ const Header = () => {
 };
 
 const MainHeader = styled.div`
+  --padding: 16px 32px;
+
   display: flex;
   align-items: baseline;
-  padding: 18px 32px;
+  overflow-x: auto;
+  padding: var(--padding);
   height: 72px;
   border-bottom: 1px solid ${COLORS.gray[300]};
+
+  @media ${(props) => props.theme.queries.phoneAndDown} {
+    align-items: center;
+    --padding: 20px 16px;
+  }
+`;
+
+const MobileNavButtons = styled.div`
+  display: none;
+
+  @media ${(props) => props.theme.queries.phoneAndDown} {
+    display: flex;
+    gap: 17px;
+  }
 `;
 
 const Nav = styled.nav`
   display: flex;
-  gap: 48px;
+  gap: clamp(12px, 4vw - 1rem, 48px);
   margin: 0px 48px;
+
+  @media ${(props) => props.theme.queries.phoneAndDown} {
+    display: none;
+  }
 `;
 
 const Side = styled.div`
